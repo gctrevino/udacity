@@ -9,7 +9,7 @@ The S3 bucket is visible in the AWS Management console.
 
 
 The student has submitted a screenshot showing all the website files uploaded to the newly created S3 bucket.
-[./gctrevino-bucket-items.png]
+[https://bit.ly/bucket-items]
 
 
 The S3 bucket is configured to support static website hosting.
