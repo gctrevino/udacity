@@ -5,21 +5,21 @@ The website should be accessible to anyone on the Internet via a web browser. Th
 
 
 The S3 bucket is visible in the AWS Management console.
-[./gctrevino-bucket.png]
+  [https://bit.ly/1-bucket]
 
 
 The student has submitted a screenshot showing all the website files uploaded to the newly created S3 bucket.
-[https://bit.ly/bucket-items]
+  [https://bit.ly/bucket-items]
 
 
 The S3 bucket is configured to support static website hosting.
-[./gctrevino-bucket-static-website.png]
+  [https://bit.ly/1-bucket-static-website]
 
 
 The bucket should allow public access. The S3 bucket has an IAM bucket policy that makes the bucket contents publicly accessible.
-[./gctrevino-bucket-policy.png]
+  [https://bit.ly/1-bucket-policy]
 
 
 CloudFront has been configured to retrieve and distribute website files.
-[./gctrevino-cdn.png]
+  [https://bit.ly/1-cdn]
 
