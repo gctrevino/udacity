@@ -1,5 +1,25 @@
-CloudFront endpoint URL
-https://d279ncjtc04dix.cloudfront.net
 
-S3 website-endpoint URL
-http://bucket-gctrevino-udacity-project-1.s3-website-us-east-1.amazonaws.com
+The website should be accessible to anyone on the Internet via a web browser. The student should have provided the CloudFront domain name URL and website-endpoint URL for the website.
+  CloudFront endpoint URL   https://d279ncjtc04dix.cloudfront.net
+  S3 website-endpoint URL   http://bucket-gctrevino-udacity-project-1.s3-website-us-east-1.amazonaws.com
+
+
+The S3 bucket is visible in the AWS Management console.
+[./gctrevino-bucket.png]
+
+
+The student has submitted a screenshot showing all the website files uploaded to the newly created S3 bucket.
+[./gctrevino-bucket-items.png]
+
+
+The S3 bucket is configured to support static website hosting.
+[./gctrevino-bucket-static-website.png]
+
+
+The bucket should allow public access. The S3 bucket has an IAM bucket policy that makes the bucket contents publicly accessible.
+[./gctrevino-bucket-policy.png]
+
+
+CloudFront has been configured to retrieve and distribute website files.
+[./gctrevino-cdn.png]
+
