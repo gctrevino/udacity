@@ -1,0 +1,10 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Gilberto Trevino / Udacity - This template deploys nested resources.
+
+Resources:
+  CoreStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: https://s3.amazonaws.com/udacity-course-gctrevino/cfn-network.yaml
+      Parameters:
+        file: https://s3.amazonaws.com/udacity-course-gctrevino/cfn-network-parameters.json
