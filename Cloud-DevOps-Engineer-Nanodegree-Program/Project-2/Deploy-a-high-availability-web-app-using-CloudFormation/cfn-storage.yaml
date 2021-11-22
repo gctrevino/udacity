@@ -1,0 +1,19 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Gilberto Trevino / Udacity - This template deploys servers resources.
+
+Parameters:
+  EnvironmentName:
+    Description: An environment name that will be prefixed to resource names
+    Type: String
+
+Outputs:
+  S3BucketName:
+    Description: The name of the S3 bucket where the static website is hosted
+    Value: !Join ['', ['s3://', !Ref S3Bucket]]
+
+Resources:
+  S3Bucket:
+    Type: 'AWS::S3::Bucket'
+    DeletionPolicy: Retain
+    Properties:
+      BucketName: !Sub ${EnvironmentName}-project2-storage
