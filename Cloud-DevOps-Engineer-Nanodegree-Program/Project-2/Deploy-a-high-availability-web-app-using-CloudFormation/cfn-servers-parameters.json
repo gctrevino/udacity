@@ -2,5 +2,21 @@
   {
     "ParameterKey": "EnvironmentName",
     "ParameterValue": "UdacityProject"
+  },
+  {
+    "ParameterKey": "AMIImageId",
+    "ParameterValue": "ami-0747bdcabd34c712a"
+  },
+  {
+    "ParameterKey": "InstanceType",
+    "ParameterValue": "t3.medium"
+  },
+  {
+    "ParameterKey": "MinServers",
+    "ParameterValue": 4
+  },
+  {
+    "ParameterKey": "MaxServers",
+    "ParameterValue": 10
   }
 ]

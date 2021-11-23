@@ -5,6 +5,22 @@ Parameters:
   EnvironmentName:
     Description: An environment name that will be prefixed to resource names
     Type: String
+  AMIImageId:
+    Description: The AMI image ID to use for the EC2 instances
+    Type: String
+  InstanceType:
+    Description: The type of EC2 instance to launch
+    Type: String
+    AllowedValues:
+      - t3.medium
+      - t3.large
+      - t3.xlarge
+  MinServers:
+    Description: The minimum number of servers to maintain in the environment
+    Type: Number
+  MaxServers:
+    Description: The maximum number of servers to maintain in the environment
+    Type: Number
 
 Outputs:
   LBDNSName:
@@ -107,12 +123,10 @@ Resources:
           #VARSTATUS=`aws s3 sync s3://udacityproject-project2-storage /var/www/html/`
           systemctl start apache2.service
       # ToDo: AMI ID of Ubuntu Linux machine. Too get one, try creating a VM from the web console.
-      ImageId: ami-0747bdcabd34c712a
-      # ToDo: Change the key-pair name, as applicable to you.
-      KeyName: udacity_keypair
+      ImageId: !Ref AMIImageId
       SecurityGroups:
       - Ref: WebServerSecGroup
-      InstanceType: t3.medium
+      InstanceType: !Ref InstanceType
 #      IamInstanceProfile: !Ref WebAppEC2InstanceProfile
       BlockDeviceMappings:
       - DeviceName: "/dev/sdk"
@@ -127,8 +141,8 @@ Resources:
           !Sub "${EnvironmentName}-PRIV-NETS"
       LaunchConfigurationName:
         Ref: WebAppLaunchConfig
-      MinSize: '4'
-      MaxSize: '10'
+      MinSize: !Ref MinServers
+      MaxSize: !Ref MaxServers
       TargetGroupARNs:
       - Ref: WebAppTargetGroup
       MetricsCollection:
