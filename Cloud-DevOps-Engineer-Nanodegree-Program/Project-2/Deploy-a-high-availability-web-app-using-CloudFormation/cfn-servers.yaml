@@ -23,6 +23,10 @@ Resources:
           FromPort: 80
           ToPort: 80
           CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
       SecurityGroupEgress:
         - IpProtocol: tcp
           FromPort: 0
@@ -60,6 +64,37 @@ Resources:
         - Key: Name
           Value: !Sub "${EnvironmentName}-WebServerSecGroup"
 
+#  WebAppRole:
+#    Type: AWS::IAM::Role
+#    Properties:
+#      AssumeRolePolicyDocument:
+#        Version: '2012-10-17'
+#        Statement:
+#          - Effect: Allow
+#            Principal:
+#              Service:
+#                - 'ec2.amazonaws.com'
+#            Action:
+#              - 'sts:AssumeRole'
+#      Path: /
+#      Policies:
+#        - PolicyName: WebAppPolicy
+#          PolicyDocument:
+#            Version: '2012-10-17'
+#            Statement:
+#              - Effect: Allow
+#                Action:
+#                  - s3:ListBucket
+#                Resource:
+#                  - !Sub 'arn:aws:s3:::${EnvironmentName}-project2-storage'
+#
+#  WebAppEC2InstanceProfile:
+#    Type: AWS::IAM::InstanceProfile
+#    Properties:
+#      Path: /
+#      Roles:
+#        - !Ref WebAppRole
+
   WebAppLaunchConfig:
     Type: AWS::AutoScaling::LaunchConfiguration
     Properties:
@@ -69,7 +104,7 @@ Resources:
           apt-get update -y
           apt-get install apache2 -y
           echo "it works! Udagram, Udacity" > /var/www/html/index.html
-          #aws s3 sync s3://udacityproject-project2-storage /var/www/html/
+          #VARSTATUS=`aws s3 sync s3://udacityproject-project2-storage /var/www/html/`
           systemctl start apache2.service
       # ToDo: AMI ID of Ubuntu Linux machine. Too get one, try creating a VM from the web console.
       ImageId: ami-0747bdcabd34c712a
@@ -78,6 +113,7 @@ Resources:
       SecurityGroups:
       - Ref: WebServerSecGroup
       InstanceType: t3.medium
+#      IamInstanceProfile: !Ref WebAppEC2InstanceProfile
       BlockDeviceMappings:
       - DeviceName: "/dev/sdk"
         Ebs:
@@ -91,10 +127,22 @@ Resources:
           !Sub "${EnvironmentName}-PRIV-NETS"
       LaunchConfigurationName:
         Ref: WebAppLaunchConfig
-      MinSize: '3'
-      MaxSize: '5'
+      MinSize: '4'
+      MaxSize: '10'
       TargetGroupARNs:
       - Ref: WebAppTargetGroup
+      MetricsCollection:
+        - Granularity: "1Minute"
+          Metrics:
+            - "GroupMinSize"
+            - "GroupMaxSize"
+      Tags:
+        - Key: Environment
+          Value: !Ref EnvironmentName
+          PropagateAtLaunch: true
+        - Key: Name
+          Value: !Sub "${EnvironmentName}-WebApp"
+          PropagateAtLaunch: true
 
   WebAppLB:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
@@ -117,6 +165,18 @@ Resources:
       Port: '80'
       Protocol: HTTP
 
+  ListenerSSH:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      DefaultActions:
+      - Type: forward
+        TargetGroupArn:
+          Ref: WebAppTargetGroup
+      LoadBalancerArn:
+        Ref: WebAppLB
+      Port: '22'
+      Protocol: HTTP
+
   ALBListenerRule:
       Type: AWS::ElasticLoadBalancingV2::ListenerRule
       Properties:
@@ -128,6 +188,18 @@ Resources:
           Values: [/]
         ListenerArn: !Ref 'Listener'
         Priority: 1
+
+  ALBListenerRuleSSH:
+      Type: AWS::ElasticLoadBalancingV2::ListenerRule
+      Properties:
+        Actions:
+        - Type: forward
+          TargetGroupArn: !Ref 'WebAppTargetGroup'
+        Conditions:
+        - Field: path-pattern
+          Values: [/]
+        ListenerArn: !Ref 'ListenerSSH'
+        Priority: 2
 
   WebAppTargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup

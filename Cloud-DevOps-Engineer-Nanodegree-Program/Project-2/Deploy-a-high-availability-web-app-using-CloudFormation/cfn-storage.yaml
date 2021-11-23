@@ -17,3 +17,20 @@ Resources:
     DeletionPolicy: Retain
     Properties:
       BucketName: !Sub ${EnvironmentName}-project2-storage
+
+  S3BucketPolicy:
+    Type: 'AWS::S3::BucketPolicy'
+    Properties:
+      Bucket: !Ref S3Bucket
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Sid: S3BucketPolicy
+            Effect: Allow
+            Principal:
+              AWS: '*'
+            Action:
+              - s3:GetObject
+              - s3:PutObject
+            Resource:
+              - !Join ['', ['arn:aws:s3:::', !Ref S3Bucket, '/*']]
