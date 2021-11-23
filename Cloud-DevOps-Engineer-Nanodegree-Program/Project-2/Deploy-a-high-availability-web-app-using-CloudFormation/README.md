@@ -1,6 +1,8 @@
 # PROJECT SPECIFICATION
 ## Deploy a High-Availability Web App using CloudFormation
 
+![image](https://user-images.githubusercontent.com/5189445/142964609-539b77c8-9348-4889-9bbd-9db4d2efc068.png)
+
 ### The Basics
 
 | CRITERIA | MEETS SPECIFICATIONS |
