@@ -1,7 +1,7 @@
 # PROJECT SPECIFICATION
 ## Deploy a High-Availability Web App using CloudFormation
 
-![image](https://user-images.githubusercontent.com/5189445/142964609-539b77c8-9348-4889-9bbd-9db4d2efc068.png)
+![image](https://user-images.githubusercontent.com/5189445/142964701-25fc3e44-c40f-4bfa-ad5d-e80f412c2d4f.png)
 
 ### The Basics
 
